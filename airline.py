@@ -109,6 +109,20 @@ class Flight:
 
       #  if self._seating[to_row][to_letter] is not None:
 
+    def make_boarding_cards(self, card_printer):
+        for passenger, seat in sorted(self._passenger_seats()):
+            card_printer(passenger, seat, self.number(),
+                         self.aircraft_model())
+
+    def _passenger_seats(self):
+        """ An iterable series of passengers seating allocations"""
+        row_numbers, seat_letters = self._aircraft.seating_plan()
+        for row in row_numbers:
+            for letter in seat_letters:
+                passenger = self._seating[row][letter]
+                if passenger is not None:
+                    yield (passenger, "{}{}".format(row, letter))
+
 
 class Aircraft:
 
@@ -166,14 +180,33 @@ def make_flights():
 
     return f
 
+
+def console_card_printer(passenger, seat, flight_number, aircraft):
+    output = "| Name: {0}"\
+             " Flight: {1}"\
+             " Seat: {2}"\
+             " Aircraft: {3}"\
+             "|".format(passenger, seat, flight_number, aircraft)
+    banner = "+"+"-"*(len(output)-2)+ "+"
+    border = "|"+" "*(len(output)-2)+ "|"
+    lines = [banner, border , output, border, banner]
+    card = '\n'.join(lines)
+    print(card)
+    print(output)
+
 def main():
     f1 = make_flights()
-    pp(f1._seating)
+    #pp(f1._seating)
     f1.reallocate_passengers("22E", "12C")
-    pp(f1._seating)
+    #pp(f1._seating)
 
-    print(f1.num_available_seats())
+    #print(f1.num_available_seats())
 
+    #console_card_printer("Guido", "12A", "AA123", "Airbus 319")
+    
+    # Pass the function as a parameter. Do not include the (),
+    # otherwise Python will try to execute the function
+    f1.make_boarding_cards(console_card_printer)
 
 
 if __name__ == '__main__':
