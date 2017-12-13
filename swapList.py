@@ -4,23 +4,24 @@ def swap(val):
     :param val: a list of objects
     :return: nothing
     """
-    a = val[0:4]
-    b = val[4:]
-    val = b.copy() + a.copy()
-    print(val)
+    #a = val[0:4]
+    #b = val[4:]
+    #val = b.copy() + a.copy()
+   #print(val)
 
     m = len(val)//2
-    n = len(val)%2
+    n = len(val) % 2
     if n == 1:
         print("Odd number")
-
+        g = m+1
+        return val[m:] + val[:g]
     # TODO: make sure it works for odd number of elements
     return val[m:] + val[:m]
 
 
 
 def main():
-    val = [9, 13, 21, 4, 11, 7, 1, 3]
+    val = [9, 13, 21, 4, 8, 11, 7, 1, 3]
     print(val)
     val = swap(val)
     print(val)
