@@ -125,56 +125,54 @@ class Flight:
 
 
 class Aircraft:
-
-    def __init__(self, registration, model, num_rows,
-                 num_seats_per_row):
+    def __init__(self, registration):
         self._registration = registration
-        self._model = model
-        self._num_rows = num_rows
-        self._num_seats_per_row = num_seats_per_row
 
     def registration(self):
         return self._registration
 
-    def model(self):
-        return self._model
-
-    def seating_plan(self):
-        """
-        Produces an iterable sequence of row numbers up to
-        the number of rows in the plane.
-        The string and its slice method return a string with
-        one character per row.
-        These two objects the range, and the string are bundle
-        into a tuple
-        :return:
-        """
-        return (range(1, self._num_rows + 1),
-                "ABCDEFGHJK"[:self._num_seats_per_row])
+    def num_seats(self):
+        rows, row_seats = self.seating_plan()
+        return len(rows) * len(row_seats)
 
 
+class AirbusA319(Aircraft):
+        def model(self):
+            return "Airbus 319"
+
+        def seating_plan(self):
+            return range(1,23), "ABCDEF"
+
+
+class Boeing777(Aircraft):
+        def model(self):
+            return "Boeing 777"
+
+        def seating_plan(self):
+            return range(1, 26), "ABCDEFGHJ"
 
 def make_flights():
     """
     Test Function
     """
-
-    # f = Flight("AA123")
+    #f = Flight("AA777", AirbusA319("G-EUPT"))
     # print(f.number())
     # print(f.airline())
-    a = Aircraft("G-EUPT", "Airbus A319", num_rows=22,
-                 num_seats_per_row=6)
+    #a = Aircraft("G-EUPT", "Airbus A319", num_rows=22,
+    #             num_seats_per_row=6)
     # print(a.model())
     # print(a.registration())
     # print(a.seating_plan())
 
-    f = Flight("AA777", a)
+    f = Flight("AA777", AirbusA319("G-EUPT"))
     f.allocate_seats("12A", "Guido van Rossum") #Python
     f.allocate_seats("12B", "Rasmus Lerdorf")  #php
     f.allocate_seats("15F", "Bjarne Stroustrup")  # C++
-    f.allocate_seats("15E", "Anders Hejlsberg")   # Turbo Pascal
+
+    g = Flight("DL24", Boeing777("F-GSPS"))
+    g.allocate_seats("15E", "Anders Hejlsberg")   # Turbo Pascal
     #f.allocate_seats("E27", "Yukijiro Matsumoto")  # Ruby
-    f.allocate_seats("22E", "Yukijiro Matsumoto")  # Ruby
+    g.allocate_seats("22E", "Yukijiro Matsumoto")  # Ruby
     #pp(f._seating)
     #f.reallocate_passengers("22E", "12C")
 
@@ -187,26 +185,29 @@ def console_card_printer(passenger, seat, flight_number, aircraft):
              " Seat: {2}"\
              " Aircraft: {3}"\
              "|".format(passenger, seat, flight_number, aircraft)
-    banner = "+"+"-"*(len(output)-2)+ "+"
-    border = "|"+" "*(len(output)-2)+ "|"
+    banner = "+" + "-"*(len(output)-2) + "+"
+    border = "|" + " "*(len(output)-2) + "|"
     lines = [banner, border , output, border, banner]
     card = '\n'.join(lines)
     print(card)
-    print(output)
+    print()
 
 def main():
-    f1 = make_flights()
+    f1, g1 = make_flights()
     #pp(f1._seating)
-    f1.reallocate_passengers("22E", "12C")
+    #f1.reallocate_passengers("22E", "12C")
     #pp(f1._seating)
 
     #print(f1.num_available_seats())
 
     #console_card_printer("Guido", "12A", "AA123", "Airbus 319")
-    
+
     # Pass the function as a parameter. Do not include the (),
     # otherwise Python will try to execute the function
-    f1.make_boarding_cards(console_card_printer)
+    #f1.make_boarding_cards(console_card_printer)
+
+    print(f1.aircraft_model())
+    print(f1.num_available_seats())
 
 
 if __name__ == '__main__':
