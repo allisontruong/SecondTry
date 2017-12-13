@@ -11,7 +11,8 @@ def swap(val):
 
     m = len(val)//2
     n = len(val)%2
-    if n == 1
+    if n == 1:
+        print("Odd number")
 
     # TODO: make sure it works for odd number of elements
     return val[m:] + val[:m]
