@@ -1,4 +1,4 @@
-class RefrigeratrRaider:
+class RefrigeratorRaider:
     """
     Raid a Refrigerator
     """
