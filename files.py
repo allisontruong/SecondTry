@@ -6,7 +6,7 @@ def main(filename):
         #print(line)
         #print(line, end='')
         print(line.strip())
-        
+
     f.close()
 
 
