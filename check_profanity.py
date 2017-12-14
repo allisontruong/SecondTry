@@ -22,15 +22,12 @@ def check_profanity(text_to_check):
 
 def read_text():
     with open('movie_quotes.txt', mode='rt', encoding='utf-8') as f:
-        text = []
         for line in f:
-            text.append(line.strip())
-
-    # Call check profanity
-    if check_profanity(line.strip()):
-        print("profanity alert")
-    else:
-        print("This document has no curse words")
+            # Call check profanity
+            if check_profanity(line.strip()):
+                print("profanity alert")
+            else:
+                print("This line in document has no curse words")
 
 
 def main():
